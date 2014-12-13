@@ -6,14 +6,13 @@ import java.util.List;
 public class EquationParser {
 
 	public static List<String> parse(String eq) {
-		List<Character> ops = new ArrayList<Character>();
-		ops = ops();
 		List<String> ret_ = new ArrayList<String>();
 		String str = "";
 		for (int i = 0; i < eq.length(); i++) {
 			Character xar = eq.charAt(i);
-			if (ops.contains(xar)) {
-				ret_.add(str);
+			if (ops().contains(xar)) {
+				if (!str.equals(""))
+					ret_.add(str);
 				str = "";
 				ret_.add(xar.toString());
 			} else {
@@ -56,6 +55,24 @@ public class EquationParser {
 				ret.remove(ret.size() - 1);
 			} else {
 				ret.add(str2);
+			}
+		}
+		// Replacing {} & [] into ()
+		String[] array1 = { "[", "{" };
+		List<String> list1 = new ArrayList<String>();
+		for (String j : array1) {
+			list1.add(j);
+		}
+		String[] array2 = { "]", "}" };
+		List<String> list2 = new ArrayList<String>();
+		for (String j : array2) {
+			list2.add(j);
+		}
+		for (int i = 0; i < ret.size(); i++) {
+			String repl = ret.get(i);
+			if (list1.contains(repl) || list2.contains(repl)) {
+				ret.remove(i);
+				ret.add(i, list1.contains(repl) ? "(" : ")");
 			}
 		}
 		return ret;
