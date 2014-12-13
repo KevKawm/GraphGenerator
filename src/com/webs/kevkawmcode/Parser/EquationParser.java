@@ -79,7 +79,7 @@ public class EquationParser {
 	}
 
 	public static List<Character> ops() {
-		Character[] array = { '=', '+', '-', '*', '/', '(', ')', '^' };
+		Character[] array = { '=', '+', '-', '*', '/', '(', ')', '[', ']', '{', '}', '^' };
 		List<Character> ret = new ArrayList<Character>();
 		for (Character i : array) {
 			ret.add(i);
@@ -97,12 +97,7 @@ public class EquationParser {
 	}
 
 	public static boolean isOp(String str) {
-		String[] array = { "=", "+", "-", "*", "/", "(", ")", "^", ">", "<" };
-		List<String> list = new ArrayList<String>();
-		for (String i : array) {
-			list.add(i);
-		}
-		return list.contains(str);
+		return ops().contains(str);
 	}
 
 	public static boolean isVariable(String str) {
