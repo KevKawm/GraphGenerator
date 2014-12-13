@@ -1,4 +1,4 @@
-package KevKawm.com.github.GraphGenerator;
+package com.webs.kevkawmcode.GraphGenerator;
 
 import javax.swing.JFrame;
 

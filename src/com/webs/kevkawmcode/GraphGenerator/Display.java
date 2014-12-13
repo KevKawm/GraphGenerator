@@ -1,4 +1,4 @@
-package KevKawm.com.github.GraphGenerator;
+package com.webs.kevkawmcode.GraphGenerator;
 
 import java.awt.Color;
 import java.awt.Graphics;
