@@ -199,7 +199,9 @@ public class EquationParser {
 	}
 
 	public static List<String> ops() {
-		String[] array = { "=", "+", "-", "*", "/", "(", ")", "[", "]", "{", "}", "^", "ln", "log", "sin", "cos", "tg", "!" };
+		
+		String[] array = { "=", "+", "-", "*", "/", "(", ")", "[", "]", "{", "}", "^", "" , "ln", "log", "sin", "cos", "tg", "tan", "!", "sen"};
+		
 		List<String> ret = new ArrayList<String>();
 		for (String i : array) {
 			ret.add(i);
