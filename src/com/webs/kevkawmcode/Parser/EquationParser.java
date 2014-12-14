@@ -78,10 +78,10 @@ public class EquationParser {
 		return ret;
 	}
 
-	public static List<Character> ops() {
-		Character[] array = { '=', '+', '-', '*', '/', '(', ')', '[', ']', '{', '}', '^' };
-		List<Character> ret = new ArrayList<Character>();
-		for (Character i : array) {
+	public static List<String> ops() {
+		String[] array = { "=", "+", "-", "*", "/", "(", ")", "[", "]", "{", "}", "^" , "log", "sin", "cos", "tg", "!" };
+		List<String> ret = new ArrayList<String>();
+		for (String i : array) {
 			ret.add(i);
 		}
 		return ret;
