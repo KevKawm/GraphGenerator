@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
+import com.webs.kevkawmcode.Exception.InvalidOperationArgumentException;
+
 public class Equation {
 
 	List<String> equation;
@@ -12,6 +16,40 @@ public class Equation {
 		this.equation = equation;
 	}
 
+	public double getLeft(HashMap<String,String> values){
+		List<String> localEquation = new ArrayList<String>();
+		for (String s : equation) {
+			if (!s.equals(" ")) {
+				localEquation.add(s);
+			}
+		}
+		int equalsPos = findEqual(localEquation);
+		List<String> leftEquation = localEquation.subList(0, equalsPos);
+		try {
+			return solve(leftEquation);
+		} catch (InvalidOperationArgumentException e) {
+			JOptionPane.showMessageDialog(null, "Invalid Operation Argument", "Error", 0, null);
+			return 0;
+		}
+	}
+	
+	public double getRight(HashMap<String,String> values){
+		List<String> localEquation = new ArrayList<String>();
+		for (String s : equation) {
+			if (!s.equals(" ")) {
+				localEquation.add(s);
+			}
+		}
+		int equalsPos = findEqual(localEquation);
+		List<String> rightEquation = localEquation.subList(equalsPos, localEquation.size());
+		try {
+			return solve(rightEquation);
+		} catch (InvalidOperationArgumentException e) {
+			JOptionPane.showMessageDialog(null, "Invalid Operation Argument", "Error", 0, null);
+			return 0;
+		}
+	}
+	
 	public boolean isEqual(HashMap<String, String> values) {
 		List<String> localEquation = new ArrayList<String>();
 		for (String s : equation) {
@@ -36,15 +74,22 @@ public class Equation {
 			return false;
 		List<String> leftEquation = localEquation.subList(0, equalsPos);
 		List<String> rightEquation = localEquation.subList(equalsPos + 1, localEquation.size());
-		double leftValue = solve(leftEquation);
-		double rightValue = solve(rightEquation);
+		double rightValue = 0;
+		double leftValue = 0;
+		try {
+			leftValue = solve(leftEquation);
+			rightValue = solve(rightEquation);
+		} catch (InvalidOperationArgumentException e) {
+			JOptionPane.showMessageDialog(null, "Invalid Operation Argument", "Error", 0, null);
+			return false;
+		}
 
 		// Return if values are the same
 		return (leftValue == rightValue);
 	}
 
-	public static double solve(List<String> equation) {
-		String[][] ops = { { "!", "log", "ln", "sin", "cos", "tg" }, { "^" }, { "*", "/" }, { "+", "-" } };
+	public static double solve(List<String> equation) throws InvalidOperationArgumentException {
+		String[][] ops = { {"log", "ln", "sin", "cos", "tg", "tan", "sen" }, {"!"}, { "^" }, { "*", "/" }, { "+"} };
 		List<String> localEquation = new ArrayList<String>();
 		for (String s : equation) {
 			if (!s.equals(" ")) {
@@ -62,11 +107,12 @@ public class Equation {
 			}
 		}
 
-		for (String[] sA : ops) {
+		for (int j = 0; j < ops.length; j++) {
+			String[] sA = ops[j];
 			int i = findFirst(sA, localEquation);
 			while (i != -1) {
-				double a = Double.parseDouble(localEquation.get(i - 1));
-				double b = Double.parseDouble(localEquation.get(i + 1));
+				double a = j > 0 ? Double.parseDouble(localEquation.get(i - 1)) : 0;
+				double b = j != 1 ? Double.parseDouble(localEquation.get(i + 1)) : 0;
 				double t = 0;
 				String op = localEquation.get(i);
 				switch (op) {
@@ -85,10 +131,43 @@ public class Equation {
 				case "-":
 					t = a - b;
 					break;
+				case "!":
+					t = factorial(a);
+					if(t < 0){
+						throw(new InvalidOperationArgumentException());
+					}
+					break;
+				case "log":
+					t = Math.log10(b);
+					if(t < 0){
+						throw(new InvalidOperationArgumentException());
+					}
+					break;
+				case "ln":
+					t = Math.log(b);
+					if(t < 0){
+						throw(new InvalidOperationArgumentException());
+					}
+					break;
+				case "sin":
+					t = Math.sin(b);
+					break;
+				case "sen":
+					t = Math.sin(b);
+					break;
+				case "cos":
+					t = Math.cos(b);
+					break;
+				case "tan":
+					t = Math.tan(b);
+					break;
+				case "tg":
+					t = Math.tan(b);
+					break;
 				}
-				localEquation.set(i - 1, t + "");
-				localEquation.remove(i);
-				localEquation.remove(i);
+				localEquation.set(i, t + "");
+				if(j != 1) localEquation.remove(i + 1);
+				if(j > 0) localEquation.remove(i - 1);
 				i = findFirst(sA, localEquation);
 			}
 		}
@@ -142,12 +221,22 @@ public class Equation {
 		return -1;
 	}
 
-	public static long factorial(int num) {
-		if (num == 0 || num == 1) return 1;
-		long ret = 2;
-		for (int i = 3; i <= num; i++) {
-			ret *= i;
+	public static long factorial(double num) {
+		if (isInt(num)) {
+			if (num == 0 || num == 1)
+				return 1;
+			long ret = 2;
+			for (int i = 3; i <= num; i++) {
+				ret *= i;
+			}
+			return ret;
+		} else {
+			return -1;
 		}
-		return ret;
 	}
+
+	public static boolean isInt(double num) {
+		return (Math.round(num) == num);
+	}
+
 }
