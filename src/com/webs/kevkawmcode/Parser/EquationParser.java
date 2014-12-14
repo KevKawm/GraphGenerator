@@ -10,7 +10,7 @@ public class EquationParser {
 		String str = "";
 		for (int i = 0; i < eq.length(); i++) {
 			Character xar = eq.charAt(i);
-			if (ops().contains(xar)) {
+			if (ops().contains(xar.toString())) {
 				if (!str.equals(""))
 					ret_.add(str);
 				str = "";
@@ -73,6 +73,13 @@ public class EquationParser {
 			if (list1.contains(repl) || list2.contains(repl)) {
 				ret.remove(i);
 				ret.add(i, list1.contains(repl) ? "(" : ")");
+			}
+		}
+		// Replacing "p" into pi
+		for (int i = 0; i < ret.size(); i++) {
+			if (ret.get(i).equals("p")) {
+				ret.remove(i);
+				ret.add(i, Double.toString(Math.PI));
 			}
 		}
 		return ret;

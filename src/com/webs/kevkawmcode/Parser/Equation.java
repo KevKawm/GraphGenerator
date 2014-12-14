@@ -44,7 +44,7 @@ public class Equation {
 	}
 
 	public static double solve(List<String> equation) {
-		String[][] ops = { { "!", "log", "sin", "cos", "tg" }, { "^" }, { "*", "/" }, { "+", "-" } };
+		String[][] ops = { { "!", "log", "ln", "sin", "cos", "tg" }, { "^" }, { "*", "/" }, { "+", "-" } };
 		List<String> localEquation = new ArrayList<String>();
 		for (String s : equation) {
 			if (!s.equals(" ")) {
@@ -149,29 +149,5 @@ public class Equation {
 			ret *= i;
 		}
 		return ret;
-	}
-	
-	public static double log(int num) {
-		double exp = 1;
-		// Test if the result is whole
-		while (Math.pow(10, exp) < num) {
-			exp++;;
-		}
-		if (Math.pow(10, exp) == num) return exp;
-		// Decimal result
-		exp = 0.001;
-		while (Math.pow(10, exp) < num) {
-			exp += 0.001;
-		}
-		String whole = Double.toString(exp).substring(0, Double.toString(exp).indexOf('.'));
-		String dec = Double.toString(exp).substring(Double.toString(exp).indexOf('.') + 1).substring(0, 3);
-		if (dec.substring(0, 2).equals("00")) {
-			dec = "00" + Integer.toString(num < 10 ? Integer.parseInt(dec) - 1 : Integer.parseInt(dec));
-		} else if (dec.subSequence(0, 1).equals("0")) {
-			dec = "0" + Integer.toString(num < 10 ? Integer.parseInt(dec) - 1 : Integer.parseInt(dec));
-		} else {
-			dec = Integer.toString(num < 10 ? Integer.parseInt(dec) - 1 : Integer.parseInt(dec));
-		}
-		return Double.parseDouble(whole + "." + dec);
 	}
 }
