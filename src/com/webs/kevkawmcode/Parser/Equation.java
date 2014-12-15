@@ -16,13 +16,16 @@ public class Equation {
 		this.equation = equation;
 	}
 
-	public double getLeft(HashMap<String,String> values){
+	public double getLeft(HashMap<String, String> values) {
 		List<String> localEquation = new ArrayList<String>();
 		for (String s : equation) {
 			if (!s.equals(" ")) {
 				localEquation.add(s);
 			}
 		}
+
+		replaceVars(localEquation, values);
+
 		int equalsPos = findEqual(localEquation);
 		List<String> leftEquation = localEquation.subList(0, equalsPos);
 		try {
@@ -32,16 +35,19 @@ public class Equation {
 			return 0;
 		}
 	}
-	
-	public double getRight(HashMap<String,String> values){
+
+	public double getRight(HashMap<String, String> values) {
 		List<String> localEquation = new ArrayList<String>();
 		for (String s : equation) {
 			if (!s.equals(" ")) {
 				localEquation.add(s);
 			}
 		}
+
+		replaceVars(localEquation, values);
+
 		int equalsPos = findEqual(localEquation);
-		List<String> rightEquation = localEquation.subList(equalsPos, localEquation.size());
+		List<String> rightEquation = localEquation.subList(equalsPos + 1, localEquation.size());
 		try {
 			return solve(rightEquation);
 		} catch (InvalidOperationArgumentException e) {
@@ -49,7 +55,32 @@ public class Equation {
 			return 0;
 		}
 	}
-	
+
+	public void replaceVars(List<String> equation, HashMap<String, String> values) {
+		for (String var : values.keySet()) {
+			for (int i = 0; i < equation.size(); i++) {
+				String index = equation.get(i);
+				boolean negative = false;
+				if (i > 0 && equation.get(i - 1) != null && equation.get(i - 1).equals("-")) {
+					negative = true;
+				}
+				if (index != null && index.equals(var)) {
+					if(negative){
+						if(values.get(var).startsWith("-")){
+							equation.set(i, values.get(var).substring(1));
+						} else {
+							equation.set(i, "-" + values.get(var));
+						}
+					} else {
+						equation.set(i, values.get(var));
+					}
+					if (negative)
+						equation.remove(i - 1);
+				}
+			}
+		}
+	}
+
 	public boolean isEqual(HashMap<String, String> values) {
 		List<String> localEquation = new ArrayList<String>();
 		for (String s : equation) {
@@ -58,15 +89,7 @@ public class Equation {
 			}
 		}
 
-		// Replace all variables with values
-		for (String var : values.keySet()) {
-			for (int i = 0; i < localEquation.size(); i++) {
-				String index = localEquation.get(i);
-				if (index.equals(var)) {
-					localEquation.set(i, values.get(var));
-				}
-			}
-		}
+		replaceVars(localEquation, values);
 
 		// Solve both sides
 		int equalsPos = findEqual(localEquation);
@@ -89,7 +112,7 @@ public class Equation {
 	}
 
 	public static double solve(List<String> equation) throws InvalidOperationArgumentException {
-		String[][] ops = { {"log", "ln", "sin", "cos", "tg", "tan", "sen" }, {"!"}, { "^" }, { "*", "/" }, { "+"} };
+		String[][] ops = { { "log", "ln", "sin", "cos", "tg", "tan", "sen" }, { "!" }, { "^" }, { "*", "/" }, { "+", "-" } };
 		List<String> localEquation = new ArrayList<String>();
 		for (String s : equation) {
 			if (!s.equals(" ")) {
@@ -133,20 +156,20 @@ public class Equation {
 					break;
 				case "!":
 					t = factorial(a);
-					if(t < 0){
-						throw(new InvalidOperationArgumentException());
+					if (t < 0) {
+						throw (new InvalidOperationArgumentException());
 					}
 					break;
 				case "log":
 					t = Math.log10(b);
-					if(t < 0){
-						throw(new InvalidOperationArgumentException());
+					if (t < 0) {
+						throw (new InvalidOperationArgumentException());
 					}
 					break;
 				case "ln":
 					t = Math.log(b);
-					if(t < 0){
-						throw(new InvalidOperationArgumentException());
+					if (t < 0) {
+						throw (new InvalidOperationArgumentException());
 					}
 					break;
 				case "sin":
@@ -166,8 +189,10 @@ public class Equation {
 					break;
 				}
 				localEquation.set(i, t + "");
-				if(j != 1) localEquation.remove(i + 1);
-				if(j > 0) localEquation.remove(i - 1);
+				if (j != 1)
+					localEquation.remove(i + 1);
+				if (j > 0)
+					localEquation.remove(i - 1);
 				i = findFirst(sA, localEquation);
 			}
 		}
