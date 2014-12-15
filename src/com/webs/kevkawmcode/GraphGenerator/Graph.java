@@ -46,7 +46,7 @@ public class Graph extends JPanel implements AdjustmentListener{
 			frame.progressBar.setValue(x / 8);
 			frame.progressBar.paint(frame.progressBar.getGraphics());
 			for(int y = 0; y < 800; y++){
-				double yP = ((((double) y - 400) / 20) * interval.height);
+				double yP = (((double) (800 - y) - 400) / 20) * interval.height;
 				HashMap<String,String> values = new HashMap<String,String>();
 				values.put("x", xP + "");
 				values.put("y", yP + "");
@@ -55,8 +55,8 @@ public class Graph extends JPanel implements AdjustmentListener{
 				if(y > 1){
 					if(diff < prev){
 						less = true;
-					} else if(diff == 0 || (diff > prev && less)){
-						if(x != 0){
+					} else if(diff == 0 || (diff >= prev && less)){
+						if(prevY != 0){
 							g.drawLine(x - 1, (int) prevY, x, y);
 						}
 						prevY = y;
@@ -83,7 +83,7 @@ public class Graph extends JPanel implements AdjustmentListener{
 		for(int i = 0; i < equationImgs.size(); i++){
 			BufferedImage img = equationImgs.get(i);
 			if(((JCheckBox)frame.equationPanel.getComponent(i)).isSelected()){
-				g.drawImage(img, -pos.x, -pos.y, zoom, zoom, null);
+				g.drawImage(img, -pos.x + 17, -pos.y - 17, zoom, zoom, null);
 			}
 			//g.drawImage(img, 0, 0, 717, 717, null);
 		}

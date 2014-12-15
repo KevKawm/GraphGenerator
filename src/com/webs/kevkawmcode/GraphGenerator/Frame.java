@@ -70,14 +70,14 @@ public class Frame extends JFrame {
 		contentPane.add(graph);
 		graph.setLayout(null);
 		
-		JScrollBar graphScrollX = new JScrollBar();
+		final JScrollBar graphScrollX = new JScrollBar();
 		graphScrollX.setOrientation(JScrollBar.HORIZONTAL);
 		graphScrollX.setBounds(0, 589, 637, 17);
 		graphScrollX.addAdjustmentListener((AdjustmentListener) graph);
 		graphScrollX.setMaximum((graph.zoom - 717) / 2);
 		graph.add(graphScrollX);
 		
-		JScrollBar graphScrollY = new JScrollBar();
+		final JScrollBar graphScrollY = new JScrollBar();
 		graphScrollY.setBounds(0, 0, 17, 589);
 		graphScrollY.addAdjustmentListener((AdjustmentListener) graph);
 		graphScrollY.setMaximum((graph.zoom - 606) / 2);
@@ -89,7 +89,11 @@ public class Frame extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				graph.zoom += 2;
+				graph.zoom += 25;
+				graphScrollX.setMaximum((graph.zoom - 717) / 2);
+				graphScrollY.setMaximum((graph.zoom - 606) / 2);
+				paintComponents(getGraphics());
+				graph.repaint();
 			}
 			
 		});
@@ -101,7 +105,11 @@ public class Frame extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				graph.zoom -= 2;
+				graph.zoom -= 25;
+				graphScrollX.setMaximum((graph.zoom - 717) / 2);
+				graphScrollY.setMaximum((graph.zoom - 606) / 2);
+				paintComponents(getGraphics());
+				graph.repaint();
 			}
 			
 		});
