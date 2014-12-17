@@ -31,7 +31,6 @@ public class Equation {
 		try {
 			return solve(leftEquation);
 		} catch (InvalidOperationArgumentException e) {
-			JOptionPane.showMessageDialog(null, "Invalid Operation Argument", "Error", 0, null);
 			return 0;
 		}
 	}
@@ -51,7 +50,6 @@ public class Equation {
 		try {
 			return solve(rightEquation);
 		} catch (InvalidOperationArgumentException e) {
-			JOptionPane.showMessageDialog(null, "Invalid Operation Argument", "Error", 0, null);
 			return 0;
 		}
 	}
@@ -103,7 +101,6 @@ public class Equation {
 			leftValue = solve(leftEquation);
 			rightValue = solve(rightEquation);
 		} catch (InvalidOperationArgumentException e) {
-			JOptionPane.showMessageDialog(null, "Invalid Operation Argument", "Error", 0, null);
 			return false;
 		}
 
