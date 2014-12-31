@@ -48,6 +48,9 @@ public class Graph extends JPanel implements AdjustmentListener {
 				HashMap<String, String> values = new HashMap<String, String>();
 				values.put("x", xP + "");
 				values.put("y", yP + "");
+				double r = Math.sqrt((xP * xP) + (yP * yP));
+				values.put("r", r + "");
+				values.put("t", FindAngle(r, xP, yP) + "");
 				double diff = Math.abs(eq.getLeft(values) - eq.getRight(values));
 				g.setColor(color);
 				if (y > 1) {
@@ -62,6 +65,11 @@ public class Graph extends JPanel implements AdjustmentListener {
 		}
 		equationImgs.add(img);
 		frame.contentPane.remove(frame.progressBar);
+	}
+	
+	public double FindAngle(double r, double x, double y) {
+		double cos = x / r;
+		return y < 0 ? (2 * Math.PI) - Math.acos(cos) : Math.acos(cos);
 	}
 
 	public void removeEquation(int index) {
