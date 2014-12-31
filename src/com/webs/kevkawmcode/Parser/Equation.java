@@ -54,7 +54,7 @@ public class Equation {
 
 	public void replaceVars(List<String> equation, HashMap<String, String> values) {
 		for (String var : values.keySet()) {
-			if (listContains(equation, var)) {
+			if (equation.contains(var)) {
 				for (int i = 0; i < equation.size(); i++) {
 					String index = equation.get(i);
 					boolean negative = false;
@@ -77,15 +77,6 @@ public class Equation {
 				}
 			}
 		}
-	}
-
-	public boolean listContains(List<String> list, String s) {
-		for (String str : list) {
-			if (str.equalsIgnoreCase(s)) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	public boolean isEqual(HashMap<String, String> values) {
@@ -127,7 +118,7 @@ public class Equation {
 		}
 
 		// Finds parentheses and solves
-		if (localEquation.contains("(")) {
+		while (localEquation.contains("(")) {
 			int open = findOpen(localEquation);
 			int close = findCloseFor(localEquation, open);
 			localEquation.set(open, solve(localEquation.subList(open + 1, close)) + "");

@@ -54,9 +54,9 @@ public class Graph extends JPanel implements AdjustmentListener {
 				double diff = Math.abs(eq.getLeft(values) - eq.getRight(values));
 				g.setColor(color);
 				if (y > 1) {
-					if (diff <= ((double) interval.height) / 20) {
+					if ( /*How do I do this?!?!?!?!*/ roundTo(eq.getLeft(values),2) == roundTo(eq.getRight(values),2)) {
 						if (prevY != 0) {
-							g.drawLine(x - 1, (int) prevY, x, y);
+							g.fillRect(x, y, 1, 1);
 						}
 						prevY = y;
 					}
@@ -66,7 +66,17 @@ public class Graph extends JPanel implements AdjustmentListener {
 		equationImgs.add(img);
 		frame.contentPane.remove(frame.progressBar);
 	}
-	
+
+	public double roundTo(double number, int places) {
+		if(Double.isNaN(number)) return number;
+		String s = Double.toString(number);
+		if (s.length() - s.indexOf(".") - 1 <= places) {
+			return number;
+		} else {
+			return Double.parseDouble(s.substring(0,s.indexOf(".") + places));
+		}
+	}
+
 	public double FindAngle(double r, double x, double y) {
 		double cos = x / r;
 		return y < 0 ? (2 * Math.PI) - Math.acos(cos) : Math.acos(cos);
