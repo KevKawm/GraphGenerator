@@ -30,6 +30,8 @@ public class EquationParser {
 				break;
 			}
 		}
+		// Adding "=0"
+		if (!eq.contains("=")) eq += "=0";
 		// Separating everything
 		List<String> ret_ = new ArrayList<String>();
 		String str = "";
@@ -195,6 +197,7 @@ public class EquationParser {
 				break;
 			}
 		}
+		System.out.println(ret);
 		return ret;
 	}
 
