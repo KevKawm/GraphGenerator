@@ -54,27 +54,38 @@ public class Equation {
 
 	public void replaceVars(List<String> equation, HashMap<String, String> values) {
 		for (String var : values.keySet()) {
-			for (int i = 0; i < equation.size(); i++) {
-				String index = equation.get(i);
-				boolean negative = false;
-				if (i > 0 && equation.get(i - 1) != null && equation.get(i - 1).equals("-")) {
-					negative = true;
-				}
-				if (index != null && index.equals(var)) {
-					if(negative){
-						if(values.get(var).startsWith("-")){
-							equation.set(i, values.get(var).substring(1));
-						} else {
-							equation.set(i, "-" + values.get(var));
-						}
-					} else {
-						equation.set(i, values.get(var));
+			if (listContains(equation, var)) {
+				for (int i = 0; i < equation.size(); i++) {
+					String index = equation.get(i);
+					boolean negative = false;
+					if (i > 0 && equation.get(i - 1) != null && equation.get(i - 1).equals("-")) {
+						negative = true;
 					}
-					if (negative)
-						equation.remove(i - 1);
+					if (index != null && index.equals(var)) {
+						if (negative) {
+							if (values.get(var).startsWith("-")) {
+								equation.set(i, values.get(var).substring(1));
+							} else {
+								equation.set(i, "-" + values.get(var));
+							}
+						} else {
+							equation.set(i, values.get(var));
+						}
+						if (negative)
+							equation.remove(i - 1);
+					}
 				}
 			}
 		}
+	}
+
+	public boolean listContains(List<String> list, String s) {
+		for (String str : list) {
+			if (str.equalsIgnoreCase(s)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public boolean isEqual(HashMap<String, String> values) {
