@@ -26,7 +26,7 @@ import java.awt.Font;
 import javax.swing.JProgressBar;
 
 public class Frame extends JFrame {
-
+	private static final long serialVersionUID = 1L;
 	public JPanel contentPane;
 	private JTextField equationField;
 	public final JPanel equationPanel;

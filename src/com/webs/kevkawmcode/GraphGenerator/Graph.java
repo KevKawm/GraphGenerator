@@ -18,7 +18,7 @@ import javax.swing.JScrollBar;
 import com.webs.kevkawmcode.Parser.Equation;
 
 public class Graph extends JPanel implements AdjustmentListener {
-
+	private static final long serialVersionUID = 1L;
 	Dimension interval;
 	public int zoom;
 	Point pos;

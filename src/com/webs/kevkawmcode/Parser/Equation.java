@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.swing.JOptionPane;
-
 import com.webs.kevkawmcode.Exception.InvalidOperationArgumentException;
 
 public class Equation {
