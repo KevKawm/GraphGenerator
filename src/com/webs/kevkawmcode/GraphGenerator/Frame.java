@@ -32,11 +32,10 @@ public class Frame extends JFrame {
 	public final JPanel equationPanel;
 	public final Graph graph;
 	public JProgressBar progressBar;
-	
-	
+
 	public final List<String> equationStrings = new ArrayList<String>();
 	public final List<Equation> equations = new ArrayList<Equation>();
-	
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -64,19 +63,19 @@ public class Frame extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		graph = new Graph(new Dimension(1,1), 717, this);
+		graph = new Graph(new Dimension(1, 1), 717, this);
 		graph.setBackground(Color.BLACK);
 		graph.setBounds(157, 11, 717, 606);
 		contentPane.add(graph);
 		graph.setLayout(null);
-		
+
 		final JScrollBar graphScrollX = new JScrollBar();
 		graphScrollX.setOrientation(JScrollBar.HORIZONTAL);
 		graphScrollX.setBounds(0, 589, 637, 17);
 		graphScrollX.addAdjustmentListener((AdjustmentListener) graph);
 		graphScrollX.setMaximum((graph.zoom - 717) / 2);
 		graph.add(graphScrollX);
-		
+
 		final JScrollBar graphScrollY = new JScrollBar();
 		graphScrollY.setBounds(0, 0, 17, 589);
 		graphScrollY.addAdjustmentListener((AdjustmentListener) graph);
@@ -85,7 +84,7 @@ public class Frame extends JFrame {
 
 		JButton zoomIn = new JButton("+");
 		zoomIn.setBounds(637, 589, 40, 17);
-		zoomIn.addActionListener(new ActionListener(){
+		zoomIn.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -95,13 +94,13 @@ public class Frame extends JFrame {
 				paintComponents(getGraphics());
 				graph.repaint();
 			}
-			
+
 		});
 		graph.add(zoomIn);
-		
+
 		JButton zoomOut = new JButton("-");
 		zoomOut.setBounds(677, 589, 40, 17);
-		zoomOut.addActionListener(new ActionListener(){
+		zoomOut.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -111,10 +110,10 @@ public class Frame extends JFrame {
 				paintComponents(getGraphics());
 				graph.repaint();
 			}
-			
+
 		});
 		graph.add(zoomOut);
-		
+
 		equationPanel = new JPanel();
 		equationPanel.setBackground(Color.LIGHT_GRAY);
 		equationPanel.setBounds(10, 11, 137, 606);
@@ -137,36 +136,32 @@ public class Frame extends JFrame {
 		equationField.setBounds(128, 629, 240, 20);
 		contentPane.add(equationField);
 		equationField.setColumns(10);
-		
+
 		progressBar = new JProgressBar();
 		progressBar.setBounds(378, 628, 496, 14);
 	}
 
 	public void addEquation(final String name) {
-		if (name.contains("=")) {
-			equationStrings.add(name.replace("p", "\u03C0"));
-			equations.add(new Equation(EquationParser.parse(name)));
-			Color color = new Color((int) (Math.random() * 255),(int) (Math.random() * 255),(int) (Math.random() * 255));
-			graph.addEquation(new Equation(EquationParser.parse(name)),color);
-			final JCheckBox checkBox = new JCheckBox(name);
-			checkBox.setFont(new Font("Tahoma", Font.BOLD, 11));
-			checkBox.setBackground(color);
-			checkBox.setBounds(6, equationPanel.getComponentCount() * 26 + 7, 125, 23);
-			checkBox.setSelected(true);
-			checkBox.addActionListener(new ActionListener(){
+		equationStrings.add(name.replace("p", "\u03C0"));
+		equations.add(new Equation(EquationParser.parse(name)));
+		Color color = new Color((int) (Math.random() * 255), (int) (Math.random() * 255), (int) (Math.random() * 255));
+		graph.addEquation(new Equation(EquationParser.parse(name)), color);
+		final JCheckBox checkBox = new JCheckBox(name);
+		checkBox.setFont(new Font("Tahoma", Font.BOLD, 11));
+		checkBox.setBackground(color);
+		checkBox.setBounds(6, equationPanel.getComponentCount() * 26 + 7, 125, 23);
+		checkBox.setSelected(true);
+		checkBox.addActionListener(new ActionListener() {
 
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					graph.repaint();
-				}
-				
-			});
-			equationPanel.add(checkBox);
-			paintComponents(getGraphics());
-			equationPanel.paintComponents(equationPanel.getGraphics());
-			graph.paintComponents(graph.getGraphics());
-		} else {
-			JOptionPane.showMessageDialog(null, "The equation you entered does not contain an =", "Error", 0, null);
-		}
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				graph.repaint();
+			}
+
+		});
+		equationPanel.add(checkBox);
+		paintComponents(getGraphics());
+		equationPanel.paintComponents(equationPanel.getGraphics());
+		graph.paintComponents(graph.getGraphics());
 	}
 }
