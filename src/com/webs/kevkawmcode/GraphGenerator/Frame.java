@@ -12,7 +12,6 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JTextField;
@@ -62,6 +61,7 @@ public class Frame extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+		setResizable(false);
 
 		graph = new Graph(new Dimension(1, 1), 717, this);
 		graph.setBackground(Color.BLACK);
@@ -143,9 +143,9 @@ public class Frame extends JFrame {
 
 	public void addEquation(final String name) {
 		equationStrings.add(name.replace("p", "\u03C0"));
-		equations.add(new Equation(EquationParser.parse(name)));
+		equations.add(new Equation(EquationParser.parse(name, false)));
 		Color color = new Color((int) (Math.random() * 255), (int) (Math.random() * 255), (int) (Math.random() * 255));
-		graph.addEquation(new Equation(EquationParser.parse(name)), color);
+		graph.addEquation(new Equation(EquationParser.parse(name, true)), color);
 		final JCheckBox checkBox = new JCheckBox(name);
 		checkBox.setFont(new Font("Tahoma", Font.BOLD, 11));
 		checkBox.setBackground(color);
@@ -163,5 +163,6 @@ public class Frame extends JFrame {
 		paintComponents(getGraphics());
 		equationPanel.paintComponents(equationPanel.getGraphics());
 		graph.paintComponents(graph.getGraphics());
+		equationField.setText("");
 	}
 }

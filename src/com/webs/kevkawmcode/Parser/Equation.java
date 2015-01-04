@@ -109,7 +109,7 @@ public class Equation {
 	}
 
 	public static double solve(List<String> equation) throws InvalidOperationArgumentException {
-		String[][] ops = { { "log", "ln", "sin", "cos", "tg", "tan", "sen" }, { "!" }, { "^" }, { "*", "/" }, { "+", "-" } };
+		String[][] ops = { { "log", "ln", "sin", "cos", "tg", "tan", "sen" }, { "!" }, { "^" }, { "*", "/" }, { "+", "-" }, { "abs", "mod" } };
 		List<String> localEquation = new ArrayList<String>();
 		for (String s : equation) {
 			if (!s.equals(" ")) {
@@ -131,7 +131,7 @@ public class Equation {
 			String[] sA = ops[j];
 			int i = findFirst(sA, localEquation);
 			while (i != -1) {
-				double a = j > 0 ? Double.parseDouble(localEquation.get(i - 1)) : 0;
+				double a = j > 0 ? i != 0 ? Double.parseDouble(localEquation.get(i - 1)) : 0 : 0;
 				double b = j != 1 ? Double.parseDouble(localEquation.get(i + 1)) : 0;
 				double t = 0;
 				String op = localEquation.get(i);
@@ -184,12 +184,18 @@ public class Equation {
 				case "tg":
 					t = Math.tan(b);
 					break;
+				case "abs":
+					t = Math.abs(b);
+					break;
+				case "mod":
+					t = Math.abs(b);
+					break;
 				}
 				localEquation.set(i, t + "");
 				if (j != 1)
 					localEquation.remove(i + 1);
 				if (j > 0)
-					localEquation.remove(i - 1);
+					if (i != 0) localEquation.remove(i - 1);
 				i = findFirst(sA, localEquation);
 			}
 		}

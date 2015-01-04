@@ -5,7 +5,7 @@ import java.util.List;
 
 public class EquationParser {
 
-	public static List<String> parse(String eq) {
+	public static List<String> parse(String eq, boolean print) {
 		// Removing spaces
 		String eqBU = eq;
 		eq = "";
@@ -197,13 +197,13 @@ public class EquationParser {
 				break;
 			}
 		}
-		System.out.println(ret);
+		if (print) System.out.println(ret);
 		return ret;
 	}
 
 	public static List<String> ops() {
 		
-		String[] array = { "=", "+", "-", "*", "/", "(", ")", "[", "]", "{", "}", "^", "" , "ln", "log", "sin", "cos", "tg", "tan", "!", "sen"};
+		String[] array = { "=", "+", "-", "*", "/", "(", ")", "[", "]", "{", "}", "^", "" , "ln", "log", "sin", "cos", "tg", "tan", "!", "sen", "abs", "mod" };
 		
 		List<String> ret = new ArrayList<String>();
 		for (String i : array) {
