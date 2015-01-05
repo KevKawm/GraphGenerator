@@ -56,7 +56,7 @@ public class Frame extends JFrame {
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
 			e.printStackTrace();
 		}
-		setBounds(100, 100, 900, 700);
+		setBounds(100, 100, 1000, 690);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -65,7 +65,7 @@ public class Frame extends JFrame {
 
 		graph = new Graph(new Dimension(1, 1), 717, this);
 		graph.setBackground(Color.BLACK);
-		graph.setBounds(157, 11, 717, 606);
+		graph.setBounds(267, 11, 717, 606);
 		contentPane.add(graph);
 		graph.setLayout(null);
 
@@ -91,8 +91,10 @@ public class Frame extends JFrame {
 				graph.zoom += 25;
 				graphScrollX.setMaximum((graph.zoom - 717) / 2);
 				graphScrollY.setMaximum((graph.zoom - 606) / 2);
-				paintComponents(getGraphics());
+				repaint();
 				graph.repaint();
+				graphScrollX.repaint();
+				graphScrollY.repaint();
 			}
 
 		});
@@ -107,8 +109,10 @@ public class Frame extends JFrame {
 				graph.zoom -= 25;
 				graphScrollX.setMaximum((graph.zoom - 717) / 2);
 				graphScrollY.setMaximum((graph.zoom - 606) / 2);
-				paintComponents(getGraphics());
+				repaint();
 				graph.repaint();
+				graphScrollX.repaint();
+				graphScrollY.repaint();
 			}
 
 		});
@@ -116,7 +120,7 @@ public class Frame extends JFrame {
 
 		equationPanel = new JPanel();
 		equationPanel.setBackground(Color.LIGHT_GRAY);
-		equationPanel.setBounds(10, 11, 137, 606);
+		equationPanel.setBounds(10, 11, 247, 606);
 		contentPane.add(equationPanel);
 		equationPanel.setLayout(null);
 
@@ -142,14 +146,15 @@ public class Frame extends JFrame {
 	}
 
 	public void addEquation(final String name) {
+		Equation equation = new Equation(EquationParser.parse(name, true));
 		equationStrings.add(name.replace("p", "\u03C0"));
-		equations.add(new Equation(EquationParser.parse(name, false)));
+		equations.add(equation);
 		Color color = new Color((int) (Math.random() * 255), (int) (Math.random() * 255), (int) (Math.random() * 255));
-		graph.addEquation(new Equation(EquationParser.parse(name, true)), color);
+		graph.addEquation(equation, color);
 		final JCheckBox checkBox = new JCheckBox(name);
 		checkBox.setFont(new Font("Tahoma", Font.BOLD, 11));
 		checkBox.setBackground(color);
-		checkBox.setBounds(6, equationPanel.getComponentCount() * 26 + 7, 125, 23);
+		checkBox.setBounds(6, equationPanel.getComponentCount() * 26 + 7, 225, 23);
 		checkBox.setSelected(true);
 		checkBox.addActionListener(new ActionListener() {
 
@@ -161,8 +166,8 @@ public class Frame extends JFrame {
 		});
 		equationPanel.add(checkBox);
 		paintComponents(getGraphics());
-		equationPanel.paintComponents(equationPanel.getGraphics());
-		graph.paintComponents(graph.getGraphics());
+		equationPanel.repaint();
+		graph.repaint();
 		equationField.setText("");
 	}
 }
